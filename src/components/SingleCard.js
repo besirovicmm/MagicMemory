@@ -1,9 +1,11 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import './SingleCard.css'
+import { GlobalContext } from '../context/GlobalContext'
 
-const SingleCard = ({ card, handleChoice, flipped, disabled }) => {
+const SingleCard = ({ card, flipped, disabled }) => {
+  const { choiceOne, setChoiceTwo, setChoiceOne } = useContext(GlobalContext)
   const handleBackClick = () => {
-    if (!disabled) handleChoice(card)
+    if (!disabled) choiceOne ? setChoiceTwo(card) : setChoiceOne(card)
   }
   return (
     <div className="card">

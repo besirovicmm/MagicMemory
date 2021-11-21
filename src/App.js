@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import './App.css'
 import SingleCard from './components/SingleCard'
+import { GlobalContext } from './context/GlobalContext'
 
 const cardImages = [
   { src: '/img/helmet-1.png', matched: false },
@@ -14,8 +15,10 @@ const cardImages = [
 function App() {
   const [cards, setCards] = useState([])
   const [turns, setTurns] = useState(0)
-  const [choiceOne, setChoiceOne] = useState(null)
-  const [choiceTwo, setChoiceTwo] = useState(null)
+  const { choiceOne, choiceTwo, setChoiceTwo, setChoiceOne } =
+    useContext(GlobalContext)
+  //const [choiceOne, setChoiceOne] = useState(null)
+  //const [choiceTwo, setChoiceTwo] = useState(null)
 
   const shuffleCards = () => {
     const shuffledCards = [...cardImages, ...cardImages]
@@ -26,9 +29,6 @@ function App() {
     setChoiceTwo(null)
     setCards(shuffledCards)
     setTurns(0)
-  }
-  const handleChoice = (card) => {
-    choiceOne ? setChoiceTwo(card) : setChoiceOne(card)
   }
   const resetTurn = () => {
     setChoiceOne(null)
@@ -54,6 +54,7 @@ function App() {
       }
     }
   }, [choiceOne, choiceTwo])
+
   useEffect(() => {
     shuffleCards()
   }, [])
@@ -67,7 +68,6 @@ function App() {
         {cards.map((card) => (
           <SingleCard
             flipped={card === choiceOne || card === choiceTwo || card.matched}
-            handleChoice={handleChoice}
             key={card.id}
             card={card}
             disabled={choiceOne && choiceTwo}
